@@ -278,13 +278,13 @@ mjx-container + br {
                 <p><span class="label">作者</span>
                     <a href="https://github.com/Landau1994"
                        target="_blank">landau1994</a>
-                    <span title="最后编辑于&nbsp;2020-12-06">2020-12-06</span>
+                    <span title="最后编辑于&nbsp;2020-04-20">2020-04-20</span>
                 </p>
                 <p>A PhD student in bioinformatics</p>
             </div>
             <h2 class="post-title">pheatmap_advanced</h2>
             <div class="post-meta">
-                本文共计9250个字 |
+                本文共计9106个字 |
                 您是第&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>位看到它们的小伙伴
             </div>
         </div>
@@ -363,31 +363,31 @@ mjx-container + br {
 </tbody>
 </table>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">### the following function were embeded in pheatmap source code</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>scale_rows <span class="ot">=</span> <span class="cf">function</span>(x)<span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>scale_rows <span class="ot">=</span> <span class="cf">function</span>(x){</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">=</span> <span class="fu">apply</span>(x, <span class="dv">1</span>, mean, <span class="at">na.rm =</span> T)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    s <span class="ot">=</span> <span class="fu">apply</span>(x, <span class="dv">1</span>, sd, <span class="at">na.rm =</span> T)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>((x <span class="sc">-</span> m) <span class="sc">/</span> s)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>scale_mat <span class="ot">=</span> <span class="cf">function</span>(mat, scale)<span class="sc">&amp;</span><span class="co">#123;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span>(scale <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"none"</span>, <span class="st">"row"</span>, <span class="st">"column"</span>)))<span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>scale_mat <span class="ot">=</span> <span class="cf">function</span>(mat, scale){</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(<span class="sc">!</span>(scale <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"none"</span>, <span class="st">"row"</span>, <span class="st">"column"</span>))){</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">stop</span>(<span class="st">"scale argument shoud take values: 'none', 'row' or 'column'"</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    mat <span class="ot">=</span> <span class="cf">switch</span>(scale, <span class="at">none =</span> mat, <span class="at">row =</span> <span class="fu">scale_rows</span>(mat), <span class="at">column =</span> <span class="fu">t</span>(<span class="fu">scale_rows</span>(<span class="fu">t</span>(mat))))</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(mat)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>generate_breaks <span class="ot">=</span> <span class="cf">function</span>(x, n, <span class="at">center =</span> F)<span class="sc">&amp;</span><span class="co">#123;</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(center)<span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>generate_breaks <span class="ot">=</span> <span class="cf">function</span>(x, n, <span class="at">center =</span> F){</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(center){</span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        m <span class="ot">=</span> <span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">c</span>(<span class="fu">min</span>(x, <span class="at">na.rm =</span> T), <span class="fu">max</span>(x, <span class="at">na.rm =</span> T))))</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        res <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span>m, m, <span class="at">length.out =</span> n <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="sc">&amp;</span><span class="co">#125;</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span><span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>{</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        res <span class="ot">=</span> <span class="fu">seq</span>(<span class="fu">min</span>(x, <span class="at">na.rm =</span> T), <span class="fu">max</span>(x, <span class="at">na.rm =</span> T), <span class="at">length.out =</span> n <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(res)</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>data.plot <span class="ot">&lt;-</span> <span class="fu">scale_mat</span>(<span class="at">mat =</span> data,<span class="at">scale =</span> <span class="st">"column"</span>)</span>
@@ -404,9 +404,9 @@ mjx-container + br {
 <h3 id="case-2">case 2</h3>
 <p>the codes were adapted from <a target="_blank" rel="noopener" href="https://slowkow.com/notes/pheatmap-tutorial/">slowkow</a> Sort dendrogram is very important</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>random_string <span class="ot">&lt;-</span> <span class="cf">function</span>(n) <span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>random_string <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">substr</span>(<span class="fu">paste</span>(<span class="fu">sample</span>(letters), <span class="at">collapse =</span> <span class="st">""</span>), <span class="dv">1</span>, n)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rgamma</span>(<span class="dv">1000</span>, <span class="at">shape =</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">5</span>, <span class="at">ncol =</span> <span class="dv">50</span>)</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -563,10 +563,10 @@ mjx-container + br {
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Number of data points per color"</span>)</span></code></pre></div>
 <p><img src="/figure/posts/pheatmap_advanced_files/figure-gfm/unnamed-chunk-7-1.png"><!-- --></p>
 <p>If we reposition the breaks at the quantiles of the data, then each color will represent an equal proportion of the data:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>quantile_breaks <span class="ot">&lt;-</span> <span class="cf">function</span>(xs, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">&amp;</span><span class="co">#123;</span></span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>quantile_breaks <span class="ot">&lt;-</span> <span class="cf">function</span>(xs, <span class="at">n =</span> <span class="dv">10</span>) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  breaks <span class="ot">&lt;-</span> <span class="fu">quantile</span>(xs, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> n))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  breaks[<span class="sc">!</span><span class="fu">duplicated</span>(breaks)]</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>mat_breaks <span class="ot">&lt;-</span> <span class="fu">quantile_breaks</span>(mat, <span class="at">n =</span> <span class="dv">11</span>)</span></code></pre></div>
 <p>lets see</p>

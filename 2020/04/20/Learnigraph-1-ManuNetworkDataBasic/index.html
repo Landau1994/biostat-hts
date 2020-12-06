@@ -278,13 +278,13 @@ mjx-container + br {
                 <p><span class="label">作者</span>
                     <a href="https://github.com/Landau1994"
                        target="_blank">Landau1994</a>
-                    <span title="最后编辑于&nbsp;2020-12-06">2020-12-06</span>
+                    <span title="最后编辑于&nbsp;2020-04-20">2020-04-20</span>
                 </p>
                 <p>A PhD student in bioinformatics</p>
             </div>
             <h2 class="post-title">Learn-igraph-Basic</h2>
             <div class="post-meta">
-                本文共计15557个字 |
+                本文共计15512个字 |
                 您是第&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>位看到它们的小伙伴
             </div>
         </div>
@@ -388,17 +388,17 @@ mjx-container + br {
 <p>我们选择一个神奇的数据Arecibo_message[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Arecibo_message" class="uri">https://en.wikipedia.org/wiki/Arecibo_message</a>], 来说明,有时候,信息所对应的矩阵，可能就是一张图片，而不是一个图。</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">###python command comes from</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">###https://codegolf.stackexchange.com/questions/182924/output-the-arecibo-message</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">py_eval</span>(<span class="st">"''.join(bin(i)[3:]for i in b'`UP@JB`IDQKJjjd`@@@@@L@@Ah@@CP@@J`@@_@@@@@LNLLP@FPtXpu&amp;#125;&amp;#125;&amp;#125;|@@@@`@@`@@@A@@A~@@~@@@CCCcDA@DMCGM____@@@@HF@H@L@@PX@_`pO`A`@HA@HHF@`LLB@FHX@@s@@Xa`CC@`HD@``L@b@XAD@PDDA@PD@C@F@X@ck@A@P@BCx@DKi[@gI</span><span class="sc">\x7f\\</span><span class="st">NC</span><span class="sc">\\</span><span class="st">@TGY@hOrAPXDFp@@@@@</span><span class="sc">\\</span><span class="st">D@@zbjipAU@@B`@Gp@@</span><span class="sc">\x7f</span><span class="st">x@G@</span><span class="sc">\\</span><span class="st">@X@LAh@lFXCLHhJHQHdPBJH@DHP@H@`@Dh@OOix')[1:]"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">py_eval</span>(<span class="st">"''.join(bin(i)[3:]for i in b'`UP@JB`IDQKJjjd`@@@@@L@@Ah@@CP@@J`@@_@@@@@LNLLP@FPtXpu}}}|@@@@`@@`@@@A@@A~@@~@@@CCCcDA@DMCGM____@@@@HF@H@L@@PX@_`pO`A`@HA@HHF@`LLB@FHX@@s@@Xa`CC@`HD@``L@b@XAD@PDDA@PD@C@F@X@ck@A@P@BCx@DKi[@gI</span><span class="sc">\x7f\\</span><span class="st">NC</span><span class="sc">\\</span><span class="st">@TGY@hOrAPXDFp@@@@@</span><span class="sc">\\</span><span class="st">D@@zbjipAU@@B`@Gp@@</span><span class="sc">\x7f</span><span class="st">x@G@</span><span class="sc">\\</span><span class="st">@X@LAh@lFXCLHhJHQHdPBJH@DHP@H@`@Dh@OOix')[1:]"</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(mat,<span class="at">split =</span> <span class="st">""</span>)))</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> mat,<span class="at">nrow =</span> <span class="dv">23</span>,<span class="at">ncol =</span> <span class="dv">73</span>)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>expand.matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(A)<span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>expand.matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(A){</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(A)</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(A)</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> n, <span class="at">ncol =</span> n)</span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="fu">rbind</span>(B,<span class="fu">t</span>(A)),<span class="fu">rbind</span>(A,C))</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(<span class="fu">expand.matrix</span>(mat),<span class="at">mode =</span> <span class="st">"undirected"</span>)</span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1,<span class="at">vertex.size=</span><span class="dv">10</span>,<span class="at">edge.width=</span><span class="dv">2</span>,<span class="at">layout=</span>layout.circle,<span class="at">vertex.color=</span><span class="st">"coral"</span>)</span></code></pre></div>
 <p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;"></p>
