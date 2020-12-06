@@ -1,0 +1,853 @@
+<!DOCTYPE HTML>
+<html class="no-js" lang="zh-CN">
+<head>
+    <!--[if lte IE 9]>
+<meta http-equiv="refresh" content="0;url=https://landau1994.github.io/warn.html">
+<![endif]-->
+<meta charset="utf-8">
+<meta http-equiv="X-DNS-Prefetch-Control" content="on">
+<link rel="dns-prefetch" href="https://landau1994.github.io">
+<link rel="dns-prefetch" href="//www.google-analytics.com">
+<link rel="prefetch" href="https://landau1994.github.io">
+<link rel="prefetch" href="//www.google-analytics.com">
+
+
+<link rel="prerender" href="https://landau1994.github.io">
+
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<meta http-equiv="mobile-agent" content="format=html5; url=https://landau1994.github.io">
+<meta name="author" content="Longteng Wang">
+
+<link rel="stylesheet" href="/css/JSimple.css">
+
+
+<link rel="shortcut icon" href="/images/favicon.png">
+
+
+<title>learn-igraph-basic - Coding for Life Sciences</title>
+
+<meta name="keywords" content="Biology, Data Science,AI,Informatics,Modeling;">
+
+<meta name="description " content="Networkdata manipulation and Baisc visualization">
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                processEscapes: true
+            }
+        });
+    </script>
+
+
+    
+
+    
+
+<meta name="generator" content="Hexo 5.2.0"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container {
+  overflow: auto hidden;
+}
+
+mjx-container + br {
+  display: none;
+}
+</style></head>
+<body>
+<div id="nav">
+    <nav class="nav-menu">
+        <a class="site-name current" href="/" title="CLS">CLS</a>
+        <a class="site-index current" href="/"><i class="fa fa-home"></i><span>首页</span></a>
+        <a href="/archives" title="归档"><i class="fa fa-archives"></i><span>归档</span></a>
+        <a href="/tags" title="标签"><i class="fa fa-tags"></i><span>标签</span></a>
+        <!-- custom single page of menus -->
+        
+        
+        <a href="/help" title="帮助">
+            <i class="fa fa-question-circle"></i>
+            <span>帮助</span>
+        </a>
+        
+    </nav>
+</div>
+
+<div class="nav-user">
+    <a class="btn-search" href="#"><i class="fa fa-search"></i></a>
+    <a class="btn-read-mode" href="#"><i class="fa fa-sun-o"></i></a>
+    <a class="btn-sns-qr" href="javascript:"><i class="fa fa-telegram"></i></a>
+</div>
+
+<div id="wrapper" class="clearfix">
+    <div id="body">
+        <div class="main" id="main">
+            <div id="cover">
+    <div class="cover-img"></div>
+    <div class="cover-info">
+        
+        <h1 class="cover-siteName">Coding for Life Science</h1>
+        <h3 class="cover-siteTitle">Coding for Life Science</h3>
+        <p class="cover-siteDesc">关注从数据和模型中获取生物知识的博客</p>
+        <div class="cover-sns">
+            
+    &nbsp;&nbsp;<div class="btn btn-telegram">
+        <a href="" target="_blank" title="telegram" ref="friend">
+            <i class="fa fa-telegram"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-instagram">
+        <a href="" target="_blank" title="instagram" ref="friend">
+            <i class="fa fa-instagram"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-twitter">
+        <a href="https://twitter.com/Landau1994" target="_blank" title="twitter" ref="friend">
+            <i class="fa fa-twitter"></i>
+        </a>
+    </div>
+
+    &nbsp;&nbsp;<div class="btn btn-github">
+        <a href="https://github.com/Landau1994" target="_blank" title="github" ref="friend">
+            <i class="fa fa-github"></i>
+        </a>
+    </div>
+
+
+        </div>
+    </div>
+</div>
+
+            <div class="page-title">
+    <ul>
+        <li><a href="/">最近</a></li>
+        
+            
+                <li class="">
+                    <a href="/categories/genomics" data-name="基因组学">基因组学</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/implementation" data-name="编程实践">编程实践</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/reference" data-name="文献阅读">文献阅读</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/math" data-name="数学学习">数学学习</a>
+                </li>
+            
+                <li class="">
+                    <a href="/categories/others" data-name="其他">其他</a>
+                </li>
+            
+        
+        <li class="page-search">
+    <form id="search" class="search-form">
+        <input type="text"
+               readonly="readonly"
+               id="local-search-input-tip"
+               placeholder="读物检索~" />
+        <button type="button" disabled="disabled" class="search-form-submit"><i class="fa fa-search"></i></button>
+    </form>
+</li>
+
+    </ul>
+</div>
+<div class="main-inner">
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        <div class="post-header">
+            <div class="post-author clearfix">
+                <a class="avatar fleft" href="https://github.com/Landau1994"
+                   target="_blank">
+                    <img width="48" src="/images/faceicon.png" alt="avatar"/>
+                </a>
+                <p><span class="label">作者</span>
+                    <a href="https://github.com/Landau1994"
+                       target="_blank">Landau1994</a>
+                    <span title="最后编辑于&nbsp;2020-12-06">2020-12-06</span>
+                </p>
+                <p>A PhD student in bioinformatics</p>
+            </div>
+            <h2 class="post-title">Learn-igraph-Basic</h2>
+            <div class="post-meta">
+                本文共计15557个字 |
+                您是第&nbsp;<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>位看到它们的小伙伴
+            </div>
+        </div>
+        <div class="post-content markdown-body">
+            <p><em>Learn-igraph</em>系列是对<a target="_blank" rel="noopener" href="https://link.springer.com/book/10.1007/978-1-4939-0983-4">Statistical Analysis of Network Data with R</a>一书的学习笔记，介绍如何使用R进行网络数据分析，网络数据的处理主要是基于<code>igraph</code>包，可视化用的是<code>ggnet</code></p>
+<h3 id="基本概念">0. 基本概念</h3>
+<p>一些需要知道的基本概念；</p>
+<ul>
+<li><p>Network;</p></li>
+<li><p>Graph;</p></li>
+<li><p>Order of a graph;</p></li>
+<li><p>Size of a graph;</p></li>
+<li><p>directed graph;</p></li>
+<li><p>undirected graph;</p></li>
+<li><p>subgraph;</p></li>
+</ul>
+<h3 id="创建igraph-class">1. 创建igraph class</h3>
+<h4 id="无向图">1.1 无向图</h4>
+<p>igraph包处理网络图的数据结构为igraph class, 最基础的创建方式如下：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggnetwork)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph.formula</span>(<span class="dv">1-2</span>,<span class="dv">1-3</span>,<span class="dv">2-3</span>,<span class="dv">2-4</span>,<span class="dv">3-5</span>,<span class="dv">4-5</span>,<span class="dv">4-6</span>,<span class="dv">4-7</span>,<span class="dv">5-6</span>,<span class="dv">6-7</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">layout.auto</span>(g)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g, <span class="at">layout=</span>l, <span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-1-1.png" style="display: block; margin: auto;"></p>
+<p>该网络的基本信息可以通过如下方式获得：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">###+ 7/7 vertices, named, from 27d8280:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] 1 2 3 4 5 6 7</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">###+ 10/10 edges from 27d8280 (vertex names):</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] 1--2 1--3 2--3 2--4 3--5 4--5 4--6 4--7 5--6 6--7</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">###str(g)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">get.adjedgelist</span>(g)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># $`1`</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># + 2/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 1--2 1--3</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># $`2`</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># + 3/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 1--2 2--3 2--4</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># $`3`</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># + 3/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 1--3 2--3 3--5</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># $`4`</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># + 4/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 2--4 4--5 4--6 4--7</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># $`5`</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># + 3/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 3--5 4--5 5--6</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># $`6`</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># + 3/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 4--6 5--6 6--7</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># $`7`</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># + 2/10 edges from f3f6e64 (vertex names):</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 4--7 6--7</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">get.edgelist</span>(g)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># [,1] [,2]</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># [1,] "1"  "2" </span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co"># [2,] "1"  "3" </span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># [3,] "2"  "3" </span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co"># [4,] "2"  "4" </span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co"># [5,] "3"  "5" </span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="co"># [6,] "4"  "5" </span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co"># [7,] "4"  "6" </span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co"># [8,] "4"  "7" </span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># [9,] "5"  "6" </span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co"># [10,] "6"  "7" </span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(g, <span class="at">e=</span><span class="cn">TRUE</span>, <span class="at">v=</span><span class="cn">TRUE</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co"># IGRAPH f673c51 UN-- 7 10 -- </span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="co">#   + attr: name (v/c)</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co"># + edges from f673c51 (vertex names):</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="co">#   [1] 1--2 1--3 2--3 2--4 3--5 4--5 4--6 4--7 5--6 6--7</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="fu">get.adjacency</span>(g)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 7 x 7 sparse Matrix of class "dgCMatrix"</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 2 3 4 5 6 7</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 1 . 1 1 . . . .</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="co"># 2 1 . 1 1 . . .</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 1 1 . . 1 . .</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 . 1 . . 1 1 1</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="co"># 5 . . 1 1 . 1 .</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="co"># 6 . . . 1 1 . 1</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="co"># 7 . . . 1 . 1 .</span></span></code></pre></div>
+<h4 id="有向图">1.2 有向图</h4>
+<p>同样的方法，也可以用来创建有向图；</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dg <span class="ot">&lt;-</span> <span class="fu">graph.formula</span>(<span class="dv">1</span><span class="sc">-+</span><span class="dv">2</span>,<span class="dv">1</span><span class="sc">-+</span><span class="dv">3</span>,<span class="dv">2</span><span class="sc">++</span><span class="dv">3</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g, <span class="at">vertex.size=</span><span class="dv">10</span>,<span class="at">layout=</span>l, <span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dg,<span class="at">vertex.size=</span><span class="dv">10</span>,<span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-3-1.png" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div>
+<h4 id="从邻接矩阵导入图">1.3 从邻接矩阵导入图；</h4>
+<p>我们选择一个神奇的数据Arecibo_message[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Arecibo_message" class="uri">https://en.wikipedia.org/wiki/Arecibo_message</a>], 来说明,有时候,信息所对应的矩阵，可能就是一张图片，而不是一个图。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">###python command comes from</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">###https://codegolf.stackexchange.com/questions/182924/output-the-arecibo-message</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> reticulate<span class="sc">::</span><span class="fu">py_eval</span>(<span class="st">"''.join(bin(i)[3:]for i in b'`UP@JB`IDQKJjjd`@@@@@L@@Ah@@CP@@J`@@_@@@@@LNLLP@FPtXpu&amp;#125;&amp;#125;&amp;#125;|@@@@`@@`@@@A@@A~@@~@@@CCCcDA@DMCGM____@@@@HF@H@L@@PX@_`pO`A`@HA@HHF@`LLB@FHX@@s@@Xa`CC@`HD@``L@b@XAD@PDDA@PD@C@F@X@ck@A@P@BCx@DKi[@gI</span><span class="sc">\x7f\\</span><span class="st">NC</span><span class="sc">\\</span><span class="st">@TGY@hOrAPXDFp@@@@@</span><span class="sc">\\</span><span class="st">D@@zbjipAU@@B`@Gp@@</span><span class="sc">\x7f</span><span class="st">x@G@</span><span class="sc">\\</span><span class="st">@X@LAh@lFXCLHhJHQHdPBJH@DHP@H@`@Dh@OOix')[1:]"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">unlist</span>(<span class="fu">strsplit</span>(mat,<span class="at">split =</span> <span class="st">""</span>)))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> mat,<span class="at">nrow =</span> <span class="dv">23</span>,<span class="at">ncol =</span> <span class="dv">73</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>expand.matrix <span class="ot">&lt;-</span> <span class="cf">function</span>(A)<span class="sc">&amp;</span><span class="co">#123;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(A)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(A)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> m, <span class="at">ncol =</span> m)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  C <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow =</span> n, <span class="at">ncol =</span> n)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cbind</span>(<span class="fu">rbind</span>(B,<span class="fu">t</span>(A)),<span class="fu">rbind</span>(A,C))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="sc">&amp;</span><span class="co">#125;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">graph_from_adjacency_matrix</span>(<span class="fu">expand.matrix</span>(mat),<span class="at">mode =</span> <span class="st">"undirected"</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1,<span class="at">vertex.size=</span><span class="dv">10</span>,<span class="at">edge.width=</span><span class="dv">2</span>,<span class="at">layout=</span>layout.circle,<span class="at">vertex.color=</span><span class="st">"coral"</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-4-1.png" style="display: block; margin: auto;"></p>
+<p>如果直接可视化这个图，我们什么也看不出来，然而，如果我们用将原数据视为栅格数据，那么，我们能看出这个数据的内涵是很丰富的</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dat_long <span class="ot">&lt;-</span> reshape2<span class="sc">::</span><span class="fu">melt</span>(mat)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dat_long<span class="sc">$</span>value <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dat_long<span class="sc">$</span>value)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dat_long) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"V1"</span>,<span class="st">"V2"</span>,<span class="st">"value"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">### plot</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>gg <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(dat_long)<span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(V1,V2,<span class="at">fill=</span>value), <span class="at">color=</span><span class="st">"#7f7f7f"</span>)<span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"white"</span>))<span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>()<span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>(<span class="at">breaks=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid=</span><span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.border=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>gg</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-5-1.png" style="display: block; margin: auto;"></p>
+<h4 id="从data.frame中创建图">1.4 从data.frame中创建图</h4>
+<p>需要两个输入，一个是边的信息，一个是节点的信息</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## A simple example with a couple of actors</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The typical case is that these tables are read in from files....</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>actors <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"Esmeralda"</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">age=</span><span class="fu">c</span>(<span class="dv">48</span>,<span class="dv">33</span>,<span class="dv">45</span>,<span class="dv">34</span>,<span class="dv">21</span>),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">gender=</span><span class="fu">c</span>(<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>relations <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from=</span><span class="fu">c</span>(<span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"David"</span>, <span class="st">"Esmeralda"</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">to=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>, <span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">same.dept=</span><span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">friendship=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">advice=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(relations, <span class="at">directed=</span><span class="cn">TRUE</span>, <span class="at">vertices=</span>actors)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="do">## The opposite operation</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">as_data_frame</span>(g, <span class="at">what=</span><span class="st">"vertices"</span>)</span></code></pre></div>
+<pre><code>##                name age gender
+## Alice         Alice  48      F
+## Bob             Bob  33      M
+## Cecil         Cecil  45      F
+## David         David  34      M
+## Esmeralda Esmeralda  21      F</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_data_frame</span>(g, <span class="at">what=</span><span class="st">"edges"</span>)</span></code></pre></div>
+<pre><code>##        from    to same.dept friendship advice
+## 1       Bob Alice     FALSE          4      4
+## 2     Cecil   Bob     FALSE          5      5
+## 3     Cecil Alice      TRUE          5      5
+## 4     David Alice     FALSE          2      4
+## 5     David   Bob     FALSE          1      2
+## 6 Esmeralda Alice      TRUE          1      3</code></pre>
+<p>可视化，</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g,<span class="at">vertex.size=</span><span class="dv">10</span>,<span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;"></p>
+<h4 id="用预定义的函数生成">1.5 用预定义的函数生成</h4>
+<p><code>igraph</code>里有很多带make的函数，是可以生成图的</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ls.str and lsf.str return an object of class "ls_str", basically the character vector of matching names (functions only for lsf.str), similarly to ls, with a print() method that calls str() on each object.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">###head(lsf.str("package:igraph"))</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="at">pattern =</span> <span class="st">"^make"</span>,<span class="at">x=</span><span class="fu">ls</span>(<span class="st">"package:igraph"</span>),<span class="at">value =</span> T)</span></code></pre></div>
+<pre><code>##  [1] "make_"                     "make_bipartite_graph"     
+##  [3] "make_chordal_ring"         "make_clusters"            
+##  [5] "make_de_bruijn_graph"      "make_directed_graph"      
+##  [7] "make_ego_graph"            "make_empty_graph"         
+##  [9] "make_full_bipartite_graph" "make_full_citation_graph" 
+## [11] "make_full_graph"           "make_graph"               
+## [13] "make_kautz_graph"          "make_lattice"             
+## [15] "make_line_graph"           "make_ring"                
+## [17] "make_star"                 "make_tree"                
+## [19] "make_undirected_graph"</code></pre>
+<p>我们展示其中的一些图：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">make_tree</span>(<span class="dv">10</span>, <span class="dv">2</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">make_bipartite_graph</span>( <span class="fu">rep</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>,<span class="at">length=</span><span class="dv">10</span>), <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>g3 <span class="ot">&lt;-</span> <span class="fu">make_star</span>(<span class="dv">10</span>, <span class="at">mode =</span> <span class="st">"out"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>g4 <span class="ot">&lt;-</span> <span class="fu">make_star</span>(<span class="dv">10</span>, <span class="at">mode =</span> <span class="st">"in"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>op <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1,<span class="at">vertex.size=</span><span class="dv">20</span>,<span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g2,<span class="at">vertex.size=</span><span class="dv">20</span>,<span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g3,<span class="at">vertex.size=</span><span class="dv">20</span>,<span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g4,<span class="at">vertex.size=</span><span class="dv">20</span>,<span class="at">vertex.color=</span><span class="st">"skyblue"</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(op)</span></code></pre></div>
+<h3 id="基本操作">2. 基本操作</h3>
+<p>诱导子图</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph.formula</span>(<span class="dv">1-2</span>,<span class="dv">1-3</span>,<span class="dv">2-3</span>,<span class="dv">2-4</span>,<span class="dv">3-5</span>,<span class="dv">4-5</span>,<span class="dv">4-6</span>,<span class="dv">4-7</span>,<span class="dv">5-6</span>,<span class="dv">6-7</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">induced.subgraph</span>(g,<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(h)</span></code></pre></div>
+<pre><code>## IGRAPH d91ee38 UN-- 5 6 -- 
+## + attr: name (v/c)
+## + edges from d91ee38 (vertex names):
+## [1] 1--2 1--3 2--3 2--4 3--5 4--5</code></pre>
+<p>Exclusion：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> g <span class="sc">-</span> <span class="fu">vertices</span>(<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(h)</span></code></pre></div>
+<pre><code>## IGRAPH d923ec9 UN-- 5 6 -- 
+## + attr: name (v/c)
+## + edges from d923ec9 (vertex names):
+## [1] 1--2 1--3 2--3 2--4 3--5 4--5</code></pre>
+<p>Inclusion:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> h <span class="sc">+</span> <span class="fu">vertices</span>(<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>))</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> h <span class="sc">+</span> <span class="fu">edges</span>(<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>),<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">7</span>),<span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">6</span>),<span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(g)</span></code></pre></div>
+<pre><code>## IGRAPH d928f5d UN-- 7 10 -- 
+## + attr: name (v/c)
+## + edges from d928f5d (vertex names):
+##  [1] 1--2 1--3 2--3 2--4 3--5 4--5 4--6 4--7 5--6 6--7</code></pre>
+<p>union:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> h</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>h2 <span class="ot">&lt;-</span> <span class="fu">graph.formula</span>(<span class="dv">4-6</span>,<span class="dv">4-7</span>,<span class="dv">5-6</span>,<span class="dv">6-7</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph.union</span>(h1,h2)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(g)</span></code></pre></div>
+<pre><code>## IGRAPH d92f82f UN-- 7 10 -- 
+## + attr: name (v/c)
+## + edges from d92f82f (vertex names):
+##  [1] 6--7 5--6 4--7 4--6 4--5 3--5 2--4 2--3 1--3 1--2</code></pre>
+<h3 id="查看添加修改-属性">3. 查看/添加/修改 属性</h3>
+<p>首先创建一个示例的图，</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## A simple example with a couple of actors</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The typical case is that these tables are read in from files....</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>actors <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"Esmeralda"</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">age=</span><span class="fu">c</span>(<span class="dv">48</span>,<span class="dv">33</span>,<span class="dv">45</span>,<span class="dv">34</span>,<span class="dv">21</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">gender=</span><span class="fu">c</span>(<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>))</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>relations <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from=</span><span class="fu">c</span>(<span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"David"</span>, <span class="st">"Esmeralda"</span>),</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">to=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>, <span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>),</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">same.dept=</span><span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>),</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">friendship=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">advice=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(relations, <span class="at">directed=</span><span class="cn">TRUE</span>, <span class="at">vertices=</span>actors)</span></code></pre></div>
+<p>我们可以通过<code>$</code>运算符来查看，添加，修改属性</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">###check edge attribute</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">edge_attr</span>(g))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] "same.dept"  "friendship" "advice" </span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="do">###vertext</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(<span class="fu">vertex_attr</span>(g))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] "name"   "age"    "gender"</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="do">###Vertex</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># list.vertex.attributes(g)</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># list.edge.attributes(g)</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g)<span class="sc">$</span>name</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] "Alice"     "Bob"       "Cecil"     "David"     "Esmeralda"</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="fu">edge_attr</span>(g)<span class="sc">$</span>same.dept</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] FALSE FALSE  TRUE FALSE FALSE  TRUE</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="fu">edge_attr</span>(g)<span class="sc">$</span>friendship</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="do">###[1] 4 5 5 2 1 1</span></span></code></pre></div>
+<p>可视化如下：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## A simple example with a couple of actors</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="do">## The typical case is that these tables are read in from files....</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>actors <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"Esmeralda"</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">age=</span><span class="fu">c</span>(<span class="dv">48</span>,<span class="dv">33</span>,<span class="dv">45</span>,<span class="dv">34</span>,<span class="dv">21</span>),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">gender=</span><span class="fu">c</span>(<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>,<span class="st">"M"</span>,<span class="st">"F"</span>))</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>relations <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">from=</span><span class="fu">c</span>(<span class="st">"Bob"</span>, <span class="st">"Cecil"</span>, <span class="st">"Cecil"</span>, <span class="st">"David"</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"David"</span>, <span class="st">"Esmeralda"</span>),</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">to=</span><span class="fu">c</span>(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>, <span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Alice"</span>),</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">same.dept=</span><span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">TRUE</span>),</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">friendship=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">advice=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(relations, <span class="at">directed=</span><span class="cn">TRUE</span>, <span class="at">vertices=</span>actors)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g)<span class="sc">$</span>gender <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">revalue</span>(<span class="at">x=</span><span class="fu">V</span>(g)<span class="sc">$</span>gender,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>                            <span class="at">replace=</span><span class="fu">c</span>(<span class="st">"F"</span><span class="ot">=</span><span class="st">"Female"</span>,<span class="st">"M"</span><span class="ot">=</span><span class="st">"Male"</span>))</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g)<span class="sc">$</span>gender</span></code></pre></div>
+<pre><code>## [1] "Female" "Male"   "Female" "Male"   "Female"</code></pre>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>g<span class="sc">$</span>name <span class="ot">&lt;-</span> <span class="st">"Toy Graph"</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>tmp.df <span class="ot">&lt;-</span> <span class="fu">layout.graphopt</span>(g)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g)<span class="sc">$</span>color <span class="ot">&lt;-</span> plyr<span class="sc">::</span><span class="fu">revalue</span>(<span class="at">x=</span><span class="fu">V</span>(g)<span class="sc">$</span>gender,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">replace=</span><span class="fu">c</span>(<span class="st">"Female"</span><span class="ot">=</span><span class="st">"skyblue"</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>                                      <span class="st">"Male"</span><span class="ot">=</span><span class="st">"coral"</span>))</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g,<span class="at">layout=</span>tmp.df,<span class="at">vertex.size=</span><span class="dv">20</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.color=</span><span class="fu">V</span>(g)<span class="sc">$</span>color,<span class="at">main=</span><span class="st">"Toy Graph"</span>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'right'</span>,<span class="at">legend=</span><span class="fu">unique</span>(<span class="fu">V</span>(g)<span class="sc">$</span>gender),<span class="at">pch=</span><span class="fu">c</span>(<span class="dv">19</span>,<span class="dv">19</span>),<span class="at">col =</span> <span class="fu">c</span>(<span class="st">"skyblue"</span>,<span class="st">"coral"</span>))</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-16-1.png" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>tmp.df <span class="ot">&lt;-</span> <span class="fu">layout.graphopt</span>(g)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>gg.net <span class="ot">=</span> <span class="fu">ggnetwork</span>(g,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">arrow.gap =</span> <span class="fl">0.05</span>, </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">layout =</span> tmp.df)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg.net, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend)) <span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_edges</span>(<span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">curvature =</span> <span class="dv">0</span>,</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="dv">6</span>, <span class="st">"pt"</span>), </span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">type =</span> <span class="st">"closed"</span>)) <span class="sc">+</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_nodes</span>(<span class="fu">aes</span>(<span class="at">color =</span> gender), <span class="at">size =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_nodetext</span>(<span class="fu">aes</span>(<span class="at">label =</span> name))<span class="sc">+</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"skyblue"</span>,<span class="st">"coral"</span>))<span class="sc">+</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"Toy Graph"</span>)<span class="sc">+</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_blank</span>()</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-17-1.png" style="display: block; margin: auto;"></p>
+<h3 id="更多关于图的概念和术语">4. 更多关于图的概念和术语</h3>
+<h4 id="概念">4.1 概念</h4>
+<p>下述概念不搬运书里的定义；忘记就查书。后面的章节会再用到这些概念，进行图的可视化与统计分析。</p>
+<ul>
+<li><p>multi-graph</p></li>
+<li><p>simple-graph: 可以用<code>is.simple()</code>判定，可以用<code>simplify()</code>将<code>multi-graph</code>转换为<code>simple-graph</code>.</p></li>
+<li><p>neighbors</p></li>
+<li><p>degree: The degree of a vertex v defined as the number of edges incident on v;</p></li>
+<li><p>in-degree</p></li>
+<li><p>out-degree</p></li>
+<li><p>walk</p></li>
+<li><p>trails</p></li>
+<li><p>circuit &amp; cylce;</p></li>
+<li><p>reachable</p></li>
+<li><p>graph connected</p></li>
+<li><p>component of a graph</p></li>
+<li><p>strong connected</p></li>
+<li><p>weak connected</p></li>
+<li><p>distance/geodesic distance</p></li>
+<li><p>diameter</p></li>
+</ul>
+<h4 id="一些特殊的图">4.2 一些特殊的图</h4>
+<p>与第一节有重叠</p>
+<ul>
+<li><p>complet graph</p></li>
+<li><p>clique</p></li>
+<li><p>regular graph</p></li>
+<li><p>tree</p></li>
+<li><p>forest</p></li>
+<li><p>root</p></li>
+<li><p>ancestor</p></li>
+<li><p>descendant</p></li>
+<li><p>parents, children</p></li>
+<li><p>k-star</p></li>
+<li><p>dirrected acyclic graph(DAG)</p></li>
+<li><p>bipartite graph</p></li>
+</ul>
+<!-- end list -->
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>g.bip <span class="ot">&lt;-</span> <span class="fu">graph.formula</span>(actor1<span class="sc">:</span>actor2<span class="sc">:</span>actor3,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                       movie1<span class="sc">:</span>movie2,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                       actor1<span class="sc">:</span>actor2 <span class="sc">-</span> movie1,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                       actor2<span class="sc">:</span>actor3 <span class="sc">-</span> movie2)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(<span class="at">graph =</span> g.bip)<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="at">pattern =</span> <span class="st">"^movie"</span>,<span class="fu">V</span>(<span class="at">graph =</span> g.bip)<span class="sc">$</span>name)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g.bip)<span class="sc">$</span>category <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(<span class="fu">V</span>(<span class="at">graph =</span> g.bip)<span class="sc">$</span>type,<span class="st">"Movie"</span>,<span class="st">"Actor"</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(g.bip)<span class="sc">$</span>category</span></code></pre></div>
+<pre><code>## [1] "Actor" "Actor" "Actor" "Movie" "Movie"</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> g.bip</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="do">### using matrxi product to do layout rotate 3/2pi</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>tmp.df <span class="ot">&lt;-</span> <span class="fu">layout.bipartite</span>(g) <span class="sc">%*%</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>gg.net <span class="ot">=</span> <span class="fu">ggnetwork</span>(g,</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">arrow.gap =</span> <span class="fl">0.05</span>, </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">layout =</span> tmp.df)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gg.net)</span></code></pre></div>
+<pre><code>##   x   y   name  type category      xend      yend
+## 1 0 0.0 actor1 FALSE    Actor 0.9514929 0.2378732
+## 2 0 0.5 actor2 FALSE    Actor 0.9514929 0.2621268
+## 3 0 0.5 actor2 FALSE    Actor 0.9514929 0.7378732
+## 4 0 1.0 actor3 FALSE    Actor 0.9514929 0.7621268
+## 5 0 0.0 actor1 FALSE    Actor 0.0000000 0.0000000
+## 6 0 0.5 actor2 FALSE    Actor 0.0000000 0.5000000</code></pre>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gg.net, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend)) <span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_edges</span>(<span class="at">color =</span> <span class="st">"black"</span>, </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">curvature =</span> <span class="dv">0</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>               <span class="co"># ,arrow = arrow(length = unit(6, "pt"), </span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>               <span class="co">#               type = "closed")</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>               ) <span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_nodes</span>(<span class="fu">aes</span>(<span class="at">color =</span> category), <span class="at">size =</span> <span class="dv">16</span>) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_nodetext</span>(<span class="fu">aes</span>(<span class="at">label =</span> name))<span class="sc">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"skyblue"</span>,<span class="st">"coral"</span>))<span class="sc">+</span></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="st">"bipartite graph example"</span>)<span class="sc">+</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_blank</span>()</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;"></p>
+<p><code>igraph</code>自带的例子：</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Random bipartite graph</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>inc <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sample</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>, <span class="dv">50</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)), <span class="dv">10</span>, <span class="dv">5</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_incidence_matrix</span>(inc)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g, <span class="at">layout =</span> layout_as_bipartite,<span class="at">vertex.size=</span><span class="dv">20</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.color=</span><span class="fu">c</span>(<span class="st">"skyblue"</span>,<span class="st">"coral"</span>)[<span class="fu">V</span>(g)<span class="sc">$</span>type<span class="sc">+</span><span class="dv">1</span>])</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-19-1.png" style="display: block; margin: auto;"></p>
+<h3 id="附录r配色">附录：R配色</h3>
+<p>基本颜色：</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### code provided by</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="do">####http://bc.bojanorama.pl/2013/04/r-color-reference-sheet/</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">660</span>, <span class="dv">60</span>, <span class="dv">11</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>kol <span class="ot">&lt;-</span> <span class="fu">colors</span>()[m]</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#op &lt;- par(mar=c(.1, .1, 2, .1))</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">60</span>, <span class="fu">t</span>(m), <span class="at">col=</span>kol, <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">ann=</span><span class="cn">FALSE</span>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>txtcol <span class="ot">&lt;-</span> <span class="fu">ifelse</span>( <span class="fu">apply</span>(<span class="fu">col2rgb</span>(kol), <span class="dv">2</span>, mean) <span class="sc">&lt;</span> <span class="dv">70</span>, <span class="st">"white"</span>, <span class="st">"black"</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>( <span class="fu">as.numeric</span>(<span class="fu">col</span>(m)), <span class="fu">as.numeric</span>(<span class="fu">row</span>(m)), kol, <span class="at">cex=</span>.<span class="dv">8</span>, <span class="at">col=</span>txtcol)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"grDevices::colors"</span>, <span class="dv">3</span>, <span class="at">cex=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-20-1.png" style="display: block; margin: auto;"></p>
+<p>调色版</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>RColorBrewer<span class="sc">::</span><span class="fu">display.brewer.all</span>()</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"RColorBrewer"</span>, <span class="dv">3</span>, <span class="at">cex=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-21-1.png"><!-- --></p>
+<p>渐变色</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(colorRamps)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="do">### manu</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>rdylbu <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">rev</span>(<span class="fu">brewer.pal</span>(<span class="at">n =</span> <span class="dv">11</span>, <span class="at">name =</span><span class="st">"RdYlBu"</span>)))</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>rdbu <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">rev</span>(<span class="fu">brewer.pal</span>(<span class="at">n =</span> <span class="dv">11</span>, <span class="at">name =</span><span class="st">"RdBu"</span>)))</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>navy <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"navy"</span>, <span class="st">"white"</span>, <span class="st">"firebrick3"</span>))</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>jet.colors <span class="ot">&lt;-</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"#00007F"</span>, <span class="st">"blue"</span>, <span class="st">"#007FFF"</span>, <span class="st">"cyan"</span>,</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"#7FFF7F"</span>, <span class="st">"yellow"</span>, <span class="st">"#FF7F00"</span>, <span class="st">"red"</span>, <span class="st">"#7F0000"</span>))</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>cold <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'#f7fcf0'</span>,<span class="st">'#41b6c4'</span>,<span class="st">'#253494'</span>,<span class="st">'#081d58'</span>,<span class="st">'#081d58'</span>))</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>warm <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">'#ffffb2'</span>,<span class="st">'#fecc5c'</span>,<span class="st">'#e31a1c'</span>,<span class="st">'#800026'</span>,<span class="st">'#800026'</span>))</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>warmcold <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="fu">rev</span>(<span class="fu">cold</span>(<span class="dv">21</span>)), <span class="fu">warm</span>(<span class="dv">20</span>)))</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a><span class="do">### add manu with package function</span></span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># ramp length</span></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>funnames <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">c</span>(<span class="st">"manu::rdylbu"</span>,<span class="st">"manu::rdbu"</span>,<span class="st">"manu::navy"</span>,<span class="st">"manu::jet.colors"</span>,<span class="st">"manu::warmcold"</span>,</span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>              <span class="st">"viridis::viridis"</span>,</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>              <span class="st">"grDevices::rainbow"</span>, <span class="st">"grDevices::heat.colors"</span>,</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>              <span class="st">"grDevices::terrain.colors"</span>, <span class="st">"grDevices::topo.colors"</span>,</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>              <span class="st">"grDevices::cm.colors"</span>, </span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>              <span class="st">"colorRamps::blue2red"</span>,</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>              <span class="st">"colorRamps::blue2green"</span>, <span class="st">"colorRamps::green2red"</span>,</span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>              <span class="st">"colorRamps::blue2yellow"</span>, <span class="st">"colorRamps::cyan2yellow"</span>,</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>              <span class="st">"colorRamps::magenta2green"</span>, <span class="st">"colorRamps::matlab.like"</span>,</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>              <span class="st">"colorRamps::matlab.like2"</span>, <span class="st">"colorRamps::primary.colors"</span>,</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>              <span class="st">"colorRamps::ygobb"</span>))</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>spl <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(funnames, <span class="st">"::"</span>)</span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">sapply</span>(spl, <span class="st">"["</span>, <span class="dv">1</span>)</span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>funs <span class="ot">&lt;-</span> <span class="fu">sapply</span>(spl, <span class="st">"["</span>, <span class="dv">2</span>)</span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a>kolmat <span class="ot">&lt;-</span> <span class="fu">sapply</span>(funs, do.call, <span class="fu">list</span>(N))</span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>( <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">length</span>(kolmat)), <span class="fu">nrow</span>(kolmat), <span class="fu">ncol</span>(kolmat))</span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span>(<span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">nrow</span>(mat)), <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(mat)), mat, <span class="at">col=</span>kolmat,</span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">ann=</span><span class="cn">FALSE</span>)</span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>( <span class="fu">nrow</span>(mat)<span class="sc">/</span><span class="dv">2</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="fu">ncol</span>(mat)), funnames)</span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Color Ramps function"</span>, <span class="dv">3</span>, <span class="at">cex=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="/figure/posts/Learnigraph-1-ManuNetworkDataBasic_files/figure-gfm/unnamed-chunk-22-1.png"><!-- --></p>
+<svg style="display: none" id="MJX-SVG-global-cache"><defs></defs></svg>
+            
+                
+
+            
+        </div>
+        <div class="post-tool">
+            <a class="btn-thumbs-up" href="javascript:void(0);" data-cid="52" title="95">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i> 打赏
+            </a>
+        </div>
+        
+        <div class="post-tags">标签：
+            
+            <a href="/tags/Graph/">Graph</a>
+            
+            <a href="/tags/Network/">Network</a>
+            
+        </div>
+        
+    </article>
+    
+        <p style="text-align: center">本文代表个人观点，内容仅供参考。若有不恰当之处，望不吝赐教！</p>
+    
+    
+    
+
+</div>
+
+<script src="/js/busuanzi.pure.mini.js"></script>
+
+
+
+        </div><!-- end #main-->
+    </div><!-- end #body -->
+    <footer class="footer">
+    <div class="footer-inner" style="text-align: center">
+        <p>
+            <a href="/about"  title="关于">关于</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <!-- 自定义链接 -->
+            <a href="/help" title="帮助" >帮助</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/links" title="友链">友链</a>&nbsp;&nbsp<em>·</em>&nbsp;&nbsp
+            <a href="/sitemap.xml" title="地图">地图</a>
+        </p>
+        <p>
+            本站已建立&nbsp<a href="/timeline" id="siteBuildingTime"></a>&nbsp天，<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="licence">采用知识共享署名-相同方式共享 4.0 国际许可协议创作</a><br/>
+            ©2017-<span id="cpYear"></span> 基于&nbsp<a href="http://hexo.io" target="_blank" rel="nofollow">Hexo</a>
+            ，主题采用&nbsp&nbsp<a href="https://github.com/tangkunyin/hexo-theme-jsimple" target="_blank" rel="bookmark">JSimple</a>
+            ，作者&nbsp<a href="https://landau1994.github.io" target="_blank" rel="friend">landau1994</a>
+            ，Hosted by <a href="https://pages.github.com/" target="_blank" rel="nofollow">GitHub Pages</a>
+        </p>
+    </div>
+</footer>
+
+<script src="/js/SimpleCore.js"></script>
+
+
+</div>
+<!-- search pop -->
+<div class="popup search-popup local-search-popup">
+    <div class="local-search-header clearfix">
+        <span class="search-icon">
+            <i class="fa fa-search"></i>
+        </span>
+        <span class="popup-btn-close">
+            <i class="fa fa-times-circle"></i>
+        </span>
+        <div class="local-search-input-wrapper">
+            <input id="local-search-input"
+                   spellcheck="false"
+                   type="text"
+                   autocomplete="off"
+                   placeholder="请输入查询关键词"/>
+        </div>
+    </div>
+    <div id="local-search-result"></div>
+</div>
+<div class="fixed-btn">
+    <a class="btn-gotop" href="javascript:"> <i class="fa fa-angle-up"></i></a>
+</div>
+<script>
+    $(function () {
+        var jsi_config = {
+            buildingTime: '08/01/2018',
+            current: $('.post-tags').length > 0 ? 'post' : 'archive',
+            snsQRCode: '/images/sns-qrcode.png',
+            donateImg: '/images/donate-qr.png',
+            localSearch: { dbPath: '' },
+            readMode: 'day'
+        };
+        
+            jsi_config.localSearch = {
+                dbPath: '/search.json',
+                trigger: 'auto',
+                topN: '1',
+                unescape: 'false'
+            }
+        
+        SimpleCore.init(jsi_config);
+        
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
